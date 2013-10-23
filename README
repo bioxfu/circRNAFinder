@@ -5,13 +5,13 @@ circRNAFinder is a software tool for identifying circRNAs using RNA deep sequenc
 
 System Requirements:
 1. Linux or Mac OS operation system
-2. Python >=2.6 and R >=2.15
+2. Python (version 2.6 or later) and R (version 2.15 or later)
 3. Bowtie (http://bowtie-bio.sourceforge.net/index.shtml)
 4. BEDTools (http://code.google.com/p/bedtools/)
 5. Integrative Genomics Viewer (http://www.broadinstitute.org/software/igv/)
 6. FASTX-Toolkit (http://hannonlab.cshl.edu/fastx_toolkit/) optional, used for collapsing the identical reads
 7. SRA Toolkit (http://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=software) optional, used for converting the SRA files.
-8. The path to the required softwares should be set in your $PATH variable.
+8. The installation directories of the required software should be included in your $PATH.
 
 
 Download and Installation:
@@ -62,6 +62,6 @@ Tutorial:
 The tutorial.sh helps you get started with circRNAFinder by demonstrating how to detect, annotate and visualize circRNAs using public RNA-Seq data. It also could be used as a template to build a pipeline for your own data.
 
 Contact:
-If you would like to ask any questions, please contact Fu Xing (bio.xfu@gmail.com).
+If you have any questions or would like to report a bug, please contact Dr. Fu Xing (bio.xfu@gmail.com).
 
 

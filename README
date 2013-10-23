@@ -59,7 +59,7 @@ Usage:
 
 
 Tutorial:
-The tutorial.sh helps you get started with circRNAFinder by demonstrating how to detect, annotate and visualize circRNAs using public RNA-Seq data. It also could be used as a template to build a pipeline for your own data.
+The tutorial.sh helps you get started with circRNAFinder by demonstrating how to detect, annotate and visualize circRNAs using public RNA-Seq data. It could also be used as a template to build a pipeline for your own data.
 
 Contact:
 If you have any questions or would like to report a bug, please contact Dr. Fu Xing (bio.xfu@gmail.com).

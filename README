@@ -31,10 +31,10 @@ For example, simply add the following two lines to the end of the ~/.bash_profil
 Input Reads Requirements:
 1. The adaptor sequences and low-quality bases should be trimmed if necessary. The recommended tools are cutadapt (http://code.google.com/p/cutadapt/) and SolexaQA (http://solexaqa.sourceforge.net/).
 2. Single-end reads in FASTA format. Paired-end reads should be merged into a single FASTA file.
-3. Identical reads should be collapsed into unique reads.
-4. Length of short reads should be greater or equal to 40bp.
+3. Identical reads should be collapsed into unique reads. This step is performed by fastx_collapser.py script.
+4. Length of short reads should be greater or equal to 40bp. The pipeline neglects the reads shorter than 40bp in the input files.
 
-
+ 
 Configure File Format:
 The configure file consists of one or more named sections, each of which can contain individual options with names and values.
 Configure file sections are identified by looking for lines starting with [ and ending with ]. The value between the square brackets is the section name, and can contain any characters except square brackets.

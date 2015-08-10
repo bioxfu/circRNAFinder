@@ -15,16 +15,16 @@ genome_dict = {'hg19': 'ftp://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/ch
 'mm10': 'ftp://hgdownload.cse.ucsc.edu/goldenPath/mm10/bigZips/chromFa.tar.gz',
 'TAIR10': 'ftp://ftp.ensemblgenomes.org/pub/current/plants/fasta/arabidopsis_thaliana/dna/Arabidopsis_thaliana.TAIR10.*.dna.toplevel.fa.gz'}
 
-trans_dict = {'hg19': ['ftp://ftp.ensembl.org/pub/current_fasta/homo_sapiens/cdna/Homo_sapiens.*.cdna.abinitio.fa.gz',
-						'ftp://ftp.ensembl.org/pub/current_fasta/homo_sapiens/cdna/Homo_sapiens.*.cdna.all.fa.gz',
-						'ftp://ftp.ensembl.org/pub/current_fasta/homo_sapiens/ncrna/Homo_sapiens.*.ncrna.fa.gz'],
+trans_dict = {'hg19': ['ftp://ftp.ensembl.org/pub/release-75/fasta/homo_sapiens/cdna/Homo_sapiens.*.cdna.abinitio.fa.gz',
+						'ftp://ftp.ensembl.org/pub/release-75/fasta/homo_sapiens/cdna/Homo_sapiens.*.cdna.all.fa.gz',
+						'ftp://ftp.ensembl.org/pub/release-75/fasta/homo_sapiens/ncrna/Homo_sapiens.*.ncrna.fa.gz'],
 'mm10': ['ftp://ftp.ensembl.org/pub/current_fasta/mus_musculus/cdna/Mus_musculus.*.cdna.abinitio.fa.gz',
 		'ftp://ftp.ensembl.org/pub/current_fasta/mus_musculus/cdna/Mus_musculus.*.cdna.all.fa.gz',
 		'ftp://ftp.ensembl.org/pub/current_fasta/mus_musculus/ncrna/Mus_musculus.*.ncrna.fa.gz'],
 'TAIR10': ['ftp://ftp.ensemblgenomes.org/pub/current/plants/fasta/arabidopsis_thaliana/cdna/Arabidopsis_thaliana.*.cdna.abinitio.fa.gz',
 			'ftp://ftp.ensemblgenomes.org/pub/current/plants/fasta/arabidopsis_thaliana/cdna/Arabidopsis_thaliana.*.cdna.all.fa.gz',
 			'ftp://ftp.ensemblgenomes.org/pub/current/plants/fasta/arabidopsis_thaliana/ncrna/Arabidopsis_thaliana.*.ncrna.fa.gz']}
-anno_dict = {'hg19': 'ftp://ftp.ensembl.org/pub/current_gtf/homo_sapiens/*.gtf.gz', 
+anno_dict = {'hg19': 'ftp://ftp.ensembl.org/pub/release-75/gtf/homo_sapiens/*.gtf.gz', 
 'mm10': 'ftp://ftp.ensembl.org/pub/current_gtf/mus_musculus/*.gtf.gz',
 'TAIR10': 'ftp://ftp.ensemblgenomes.org/pub/current/plants//gtf/arabidopsis_thaliana/*.gtf.gz'}
 
@@ -38,19 +38,22 @@ def gtf_build(gtf, build):
 	tx2cds_ends = {}
 	
 	for line in input_file:
+		if line.startswith('#'):
+			continue
 		line_list = line.strip().split('\t')
 		chrom, biotype, feature, start, end, strand, ID = (line_list[0],line_list[1],line_list[2],line_list[3],line_list[4],line_list[6],line_list[8])
 		if gtf == 'hg19.gtf' or gtf == 'mm10.gtf':
 			chrom = 'chr' + chrom		
 		start = str(int(start) - 1) ## 0-based
-		gene_id, tx_id = re.search('gene_id \"(.+?)\".+transcript_id \"(.+?)\"', ID).groups()
-		tx2gene[tx_id] = '%s|%s|%s|%s' % (chrom, strand, gene_id, biotype)
-		if feature == 'exon':
-			tx2exon_starts[tx_id] = start + ',' + tx2exon_starts.get(tx_id, '')
-			tx2exon_ends[tx_id] = end + ',' + tx2exon_ends.get(tx_id, '')
-		if feature == 'CDS':
-			tx2cds_starts[tx_id] = start + ',' + tx2cds_starts.get(tx_id, '')
-			tx2cds_ends[tx_id] = end + ',' + tx2cds_ends.get(tx_id, '')
+		if re.search('gene_id \"(.+?)\".+transcript_id \"(.+?)\"', ID) is not None:
+			gene_id, tx_id = re.search('gene_id \"(.+?)\".+transcript_id \"(.+?)\"', ID).groups()
+			tx2gene[tx_id] = '%s|%s|%s|%s' % (chrom, strand, gene_id, biotype)
+			if feature == 'exon':
+				tx2exon_starts[tx_id] = start + ',' + tx2exon_starts.get(tx_id, '')
+				tx2exon_ends[tx_id] = end + ',' + tx2exon_ends.get(tx_id, '')
+			if feature == 'CDS':
+				tx2cds_starts[tx_id] = start + ',' + tx2cds_starts.get(tx_id, '')
+				tx2cds_ends[tx_id] = end + ',' + tx2cds_ends.get(tx_id, '')
 	
 	gene2repretx = {} ## representative transcript (repretx) is the longest transcript for each gene 
 	trans2len = {}   
